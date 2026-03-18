@@ -1,0 +1,24 @@
+// 1. Inicializa o contexto para o recorde
+let maximo = context.get('maximo') || 0;
+
+// 2. Data e Hora sempre atuais
+let agora = new Date();
+let dataStr = agora.toLocaleDateString('pt-BR');
+let horaStr = agora.toLocaleTimeString('pt-BR');
+
+// 3. Lógica de Recorde Blindada
+// Verificamos se msg.payload é um número válido e não é o timestamp do Inject
+if (typeof msg.payload === 'number' && msg.payload < 1000000) {
+    if (msg.payload > maximo) {
+        maximo = msg.payload;
+        context.set('maximo', maximo);
+    }
+}
+
+// 4. Saídas para os 3 nós do Dashboard
+// Saída 1: DATA | Saída 2: HORA | Saída 3: RECORDE
+return [
+    { payload: dataStr },
+    { payload: horaStr },
+    { payload: maximo } 
+];

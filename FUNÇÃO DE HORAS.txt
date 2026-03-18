@@ -1,0 +1,21 @@
+// 1. Verificação de Segurança (Blindagem)
+if (!msg.payload || !Array.isArray(msg.payload) || msg.payload.length === 0) {
+    node.warn("Consulta vazia ou falhou. Verifique se o banco tem dados.");
+    return null; // Interrompe o fluxo para não dar erro vermelho
+}
+
+// 2. Processamento (Só roda se houver dados)
+let pontos = msg.payload.map(row => {
+    return {
+        "x": new Date(row.t).getTime(),
+        "y": row.valor
+    };
+});
+
+msg.payload = [{
+    "series": ["H2S"],
+    "data": [pontos],
+    "labels": ["PPM"]
+}];
+
+return msg;

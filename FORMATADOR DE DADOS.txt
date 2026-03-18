@@ -1,0 +1,22 @@
+var ppm = msg.payload;
+var classificacao = "";
+var cor = "";
+
+if (ppm < 10) {
+    classificacao = "BAIXA";
+    cor = "#00ff00"; // Verde
+} else if (ppm >= 10 && ppm < 20) {
+    classificacao = "RISCO";
+    cor = "#ffff00"; // Amarelo
+} else {
+    classificacao = "PERIGO";
+    cor = "#ff0000"; // Vermelho
+}
+
+msg.payload = {
+    valor: ppm,
+    status: classificacao,
+    cor: cor
+};
+
+return msg;

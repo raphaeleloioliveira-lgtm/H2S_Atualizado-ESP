@@ -1,0 +1,19 @@
+// 1. Validação: Só processa se existir o valor h2s_ppm no payload
+if (msg.payload && msg.payload.h2s_ppm !== undefined) {
+    
+    // 2. Simula a variação de precisão do sensor (+- 0.5 PPM)
+    var variacao = (Math.random() - 0.5);
+    var ppm = msg.payload.h2s_ppm + variacao;
+    
+    // 3. Garante que o valor não seja negativo por causa da variação
+    if (ppm < 0) ppm = 0;
+
+    // 4. Formata com 2 casas decimais e converte para número
+    msg.payload = parseFloat(ppm.toFixed(2));
+    
+    return msg;
+} else {
+    // Caso o payload venha vazio ou errado, não propaga a mensagem para não poluir o dashboard
+    node.warn("Entrada inválida no nó Extrair Concentração");
+    return null;
+}

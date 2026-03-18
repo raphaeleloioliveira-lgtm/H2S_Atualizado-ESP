@@ -1,0 +1,7 @@
+SELECT 
+    strftime('%Y-%m-%dT%H:00:00', timestamp) as t, 
+    AVG(concentracao) as valor
+FROM leituras
+WHERE timestamp > datetime('now', '-1 hours') // ADICIONE AQUI A CONSULTA QUE DESEJA
+GROUP BY strftime('%H', timestamp)
+ORDER BY timestamp ASC;
